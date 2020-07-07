@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+    registry = "mohammedx3/capstone-project"
+    registryCredential = 'docker-creds'
+}
      agent any
      stages {
          stage('Lint HTML & Dockerfile') {
@@ -9,15 +13,12 @@ pipeline {
                   echo 'Linting Dockerfile'
               }
          }
-         stage('Build image') {
-             steps{
-	            echo 'Building Docker image...'
-                withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                     sh '''
-						docker build -t mohammedx3/capstone .
-					    '''
+        stage('Building image') {
+            steps {
+                script {
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
-      }
-     }
+            }
+            }
 }
 }
