@@ -2,6 +2,7 @@ pipeline {
     environment {
     registry = "mohammedx3/capstone-project"
     registryCredential = 'docker-creds'
+    dockerImage = ''
 }
      agent any
      stages {
@@ -20,5 +21,13 @@ pipeline {
                 }
             }
             }
+        stage('Deploy Image') {
+            steps{    script {
+                docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
+                }
+                }
+            }
+}
 }
 }
