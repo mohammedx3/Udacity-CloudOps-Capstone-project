@@ -22,7 +22,8 @@ pipeline {
             }
             }
         stage('Deploy Image') {
-            steps{    script {
+            steps{    
+                script {
                 docker.withRegistry( '', registryCredential ) {
                     dockerImage.push()
                 }
@@ -38,7 +39,7 @@ pipeline {
                     sh 'kubectl apply -f k8s/k8s.yml'
                 }
       }
-    } 
+    }  
 
 }
 }
