@@ -9,5 +9,12 @@ pipeline {
                   echo 'Linting Dockerfile'
               }
          }
+         stage('Build image') {
+	            echo 'Building Docker image...'
+                withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                     sh '''
+						docker build -t mohammedx3/capstone .
+					    '''
+      }
      }
 }
