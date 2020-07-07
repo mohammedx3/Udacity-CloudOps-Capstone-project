@@ -28,14 +28,16 @@ pipeline {
                 }
                 }
             }
-          stage('K8S Deploy')  {
+        
+            }   
+             stage('K8S Deploy')  {
             steps {
-                withAWS(credentials: 'aws-creds', region: eu-west-1) {
-                    sh 'aws eks --region=eu-west-1 update-kubeconfig --name Capstone-cluster'
+                withAWS(credentials: 'aws-creds', region: eksRegion) {
+                    sh 'aws eks --region=${eksRegion} update-kubeconfig --name ${eksClusterName}'
                     sh 'kubectl apply -f k8s/uc-capstone-deployment.yml'
                 }
             }
-        }
-}
+        }    
+
 }
 }
