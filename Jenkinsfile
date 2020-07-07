@@ -10,11 +10,13 @@ pipeline {
               }
          }
          stage('Build image') {
+             steps{
 	            echo 'Building Docker image...'
                 withCredentials([usernamePassword(credentialsId: 'docker-creds', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                      sh '''
 						docker build -t mohammedx3/capstone .
 					    '''
+                }
       }
      }
 }
