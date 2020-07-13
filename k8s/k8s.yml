@@ -22,5 +22,6 @@ spec:
       containers:
         - image: mohammedx3/capstone-project
           name: application
+          imagePullPolicy: Never
           ports:
             - containerPort: 8080

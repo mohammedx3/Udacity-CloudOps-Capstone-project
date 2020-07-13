@@ -23,7 +23,7 @@ pipeline {
                 }
             }
             }
-        stage('Deploy Image') {
+        stage('Upload Image') {
             steps{    
                 script {
                 docker.withRegistry( '', registryCredential ) {
@@ -39,6 +39,7 @@ pipeline {
              withAWS(credentials: 'aws-creds', region: 'eu-west1') {
                     sh 'aws eks --region=${eksRegion} update-kubeconfig --name ${eksClusterName}'
                     sh 'kubectl apply -f k8s/k8s.yml'
+                    sh 'kubectl get pods'
                 }
       }
     }  
