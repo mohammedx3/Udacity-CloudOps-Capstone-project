@@ -1,27 +1,66 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   labels:
+#     name: application-deployment
+#   name: application
+# spec:
+#   replicas: 4
+#   strategy:
+#     rollingUpdate:
+#       maxSurge: 2
+#       maxUnavailable: 1
+#     type: RollingUpdate
+#   selector:
+#     matchLabels:
+#       name: application-deployment
+#   template:
+#     metadata:
+#       labels:
+#         name: application-deployment
+#     spec:
+#       containers:
+#         - image: mohammedx3/capstone-project
+#           name: application
+#           imagePullPolicy: Never
+#           ports:
+#             - containerPort: 8080
+apiVersion: v1
+kind: Service
+metadata:
+  name: Capstone
+spec:
+  type: LoadBalancer
+  selector:
+    app: Capstone
+  ports:
+  - port: 80
+    targetPort: 80
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    name: application-deployment
-  name: application
+  name: Capstone-deploy
 spec:
-  replicas: 4
-  strategy:
-    rollingUpdate:
-      maxSurge: 2
-      maxUnavailable: 1
-    type: RollingUpdate
   selector:
     matchLabels:
-      name: application-deployment
+      app: Capstone
+  replicas: 3
   template:
     metadata:
       labels:
-        name: application-deployment
+        app: Capstone
     spec:
       containers:
-        - image: mohammedx3/capstone-project
-          name: application
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 8080
+      - name: Capstone-pod
+        image: mohammedx3/capstone-project:3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  minReadySeconds: 10
